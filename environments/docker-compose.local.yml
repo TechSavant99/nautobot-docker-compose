@@ -3,7 +3,7 @@ services:
   nautobot:
     command: "nautobot-server runserver 0.0.0.0:8080"
     ports:
-      - "8080:8080"
+      - "192.168.4.32:8080:8080"
     volumes:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
