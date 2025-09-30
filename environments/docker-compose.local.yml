@@ -2,6 +2,9 @@
 services:
   nautobot:
     command: "nautobot-server runserver 0.0.0.0:8080"
+    container_name: nautobot
+    expose:
+      - 8080
     ports:
       - "192.168.4.32:8080:8080"
     volumes:
@@ -13,7 +16,14 @@ services:
       start_period: "60s"
       retries: 3
       test: ["CMD", "true"]  # Due to layering, disable: true won't work. Instead, change the test
+    networks:
+      - frontend
+      - default
   celery_worker:
     volumes:
       - "../config/nautobot_config.py:/opt/nautobot/nautobot_config.py"
       - "../jobs:/opt/nautobot/jobs"
+networks:
+  frontend:
+    name: frontend
+    external: true 

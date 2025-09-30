@@ -7,6 +7,7 @@ import sys
 from nautobot.core.settings import *  # noqa: F403  # pylint: disable=wildcard-import,unused-wildcard-import
 from nautobot.core.settings_funcs import is_truthy, parse_redis_connection
 
+
 #
 # Debug
 #
@@ -15,11 +16,29 @@ DEBUG = is_truthy(os.getenv("NAUTOBOT_DEBUG", False))
 
 TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
 
+
+#
+# Security and Reverse Proxy Settings
+#
+
+# Required: List of allowed hostnames/IPs that can access Nautobot
+ALLOWED_HOSTS = ['nautobot.arpa', '192.168.4.32', 'localhost']
+
+# Handle SSL termination at Caddy reverse proxy level
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Trust origins for CSRF protection when using HTTPS
+CSRF_TRUSTED_ORIGINS = ['https://nautobot.arpa']
+
+# USE_X_FORWARDED_HOST is True by default in Nautobot - no need to set explicitly
+
+
 #
 # Logging
 #
 
 LOG_LEVEL = "DEBUG" if DEBUG else "INFO"
+
 
 #
 # Redis
